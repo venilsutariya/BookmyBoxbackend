@@ -1,0 +1,144 @@
+HELLO THIS IS BOOKMYBOX APIS
+
+##1 ==> partners APIs  :
+
+///////////////////////////////////////////////////////////////////
+1.  **Signup Partner Api ===> http://localhost:8000/partner/register
+require fields are ===> 
+
+FIELDS NAME :                      TYPE                  CONDITIONS
+adminName,                        string         |     length between 3 to 20    
+email,                            string         |     email should be a valid email
+password,                         string         |     length between 5 to 25
+confirmPassword,                  string         |     password and confirmPassword must be same
+profileImage,                     file           |     require
+officeContact,                    number         |     require
+
+submit using formdata
+All fields are require ***************************
+
+////////////////////////////////////////////////////////////////
+2.  **Login Partner API ===> http://localhost:8000/partner/Login
+require fields are ===>
+
+FIELDS NAME :                      TYPE                  CONDITIONS
+email,                            string         |     email should be a valid email
+password,                         string         |     length between 5 to 25
+
+All fields are require ***************************
+
+////////////////////////////////////////////////////////////////////////////
+3.  **get Partner using authtoken API ===> http://localhost:8000/partner/get
+require fields are ===>
+
+FIELDS NAME :                      TYPE     
+authtoken,                         string
+
+All fields are require ***************************
+
+///////////////////////////////////////////////////////////////////
+FOR USER
+4.  **get all Partner API ===> http://localhost:8000/getallpartners
+require fields are ===>
+
+FIELDS NAME : no feilds just call api and you get all partners
+
+///////////////////////////////////////////////////////////////////
+5.  **edit Partner by id Api ===> http://localhost:8000/editpartnerbyid/id=:putpartneridhere
+require fields are ===> 
+
+FIELDS NAME :                      TYPE                  CONDITIONS     
+adminName,                        string         |     length between 3 to 20
+email,                            string         |     email should be a valid email
+profileImage,                     file           |     require
+officeContact,                    number         |     require
+
+submit using formdata
+All fields are require ***************************
+
+/////////////////////////////////////////////////////////////////////////////////
+6.  **logout partner by expire auth-token ===> http://localhost:8000/logoutpartner
+require fields are ===>
+
+FIELDS NAME :                      TYPE     
+authtoken,                         string
+
+after logout your authtoken expire then you need to login again.
+
+//////////////////////////////////////////////
+7.  **verify user by email for forgot password ===> http://localhost:8000/forgotpassword/partner
+require fields are ===>
+
+FIELDS NAME :                      TYPE     
+email                             string
+
+when this api call you get other api for resetpassword in response
+
+//////////////////////////////
+8. **reset partner password api ==> put url which you get in forgotpassword api response
+require fields are ===>
+
+FIELDS NAME :                      TYPE             CONDITIONS
+password                           string         length between 5 to 25
+confirmPassword                    string         password and confirmPassword must be same
+
+
+
+
+
+
+##2 ==> products APIs  :
+
+1. **add product api ===> http://localhost:8000/post/addproduct
+
+require fields are ===> 
+
+FIELDS NAME :                      TYPE                  CONDITIONS
+boxName,                          string         |     length between 3 to 20
+address,                          string         |     require
+state,                            string         |     require
+city,                             string         |     require
+location,                         file           |     require
+officeContact,                    number         |     require
+discription,                      string         |     require
+thingsToProvide,                  arrayofstring  |     require
+productImages,                     array         |     require
+
+authtoken require *******
+
+submit using formdata
+All fields are require ***************************
+
+2. **get product of admin ===> http://localhost:8000/get/products
+
+authtoken require *******
+
+
+3. **get product of admin ===> http://localhost:8000/get/allproducts
+
+bookmyboxpassword and bookmyboxname require*******
+
+4. **add product api ===> http://localhost:8000/edit/product/:id
+
+require fields are ===> 
+
+FIELDS NAME :                      TYPE                  CONDITIONS
+boxName,                          string         |     length between 3 to 20
+address,                          string         |     require
+state,                            string         |     require
+city,                             string         |     require
+location,                         file           |     require
+officeContact,                    number         |     require
+discription,                      string         |     require
+thingsToProvide,                  arrayofstring  |     require
+productImages,                     array         |     require
+
+id and authtoken require *****
+
+submit using formdata
+All fields are require ***************************
+
+5. **get product of admin ===> http://localhost:8000/delete/product/:id
+
+id and authtoken require *****
+bookmyboxpassword and bookmyboxname require*******
