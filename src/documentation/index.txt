@@ -2,9 +2,16 @@ HELLO THIS IS BOOKMYBOX APIS
 
 ##1 ==> partners APIs  :
 
-0.  **for send otp ===> http://localhost:8000/send/otptopartner
+////////////////////////////////////////////////////////////////
+OTP.  **for send otp ===> http://localhost:8000/send/otptopartner
 
 email is require
+
+OTP.  **for send otp ===> http://localhost:8000/validate/otptopartner
+
+partnerOtp is require
+//////////////////////////////////////////////////////////////////
+
 
 ///////////////////////////////////////////////////////////////////
 1.  **Signup Partner Api ===> http://localhost:8000/partner/register

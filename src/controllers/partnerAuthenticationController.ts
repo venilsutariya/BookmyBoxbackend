@@ -50,21 +50,31 @@ export const sendOtpToPartner = async(req: express.Request , res: express.Respon
     }
 }
 
-// for register our partner
-export const partnerRegister = async(req: express.Request , res: express.Response) => {  
-    try{
-        const {adminName , password , confirmPassword , officeContact , partnerOtp} = req.body;
-
+// for validate otp is correct or not
+export const otpValidationPartner = async(req: express.Request , res: express.Response) => {
+    try {
+        const {partnerOtp} = req.body;
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).json({ isSuccess: false, errors: errors.array()});
+        }
         if(!partnerOtp){
             return res.status(403).json({isSuccess : false , message : 'otp is require'});
         }
-        if(!(partnerOtp.length === 6)){
-            return res.status(403).json({isSuccess : false , message : 'otp must contain six digit'});
-        }
-        if(partnerOtp !== OTP){
+        if(partnerOtp != OTP){
             return res.status(403).json({isSuccess : false , message : 'Invalid otp'});
         }
+        return res.status(200).json({isSuccess : true , message : 'otp validate successFully'});
+    } catch (error) {
+        console.log({error});
+        return res.status(500).send({message : 'internal server error.' , error});
+    }
+}
 
+// for register our partner
+export const partnerRegister = async(req: express.Request , res: express.Response) => {  
+    try{
+        const {adminName , password , confirmPassword , officeContact } = req.body;
         // check for express validator
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -77,7 +87,7 @@ export const partnerRegister = async(req: express.Request , res: express.Respons
         }
 
         // handle all fields are require
-        if(!(adminName && password && confirmPassword && officeContact && partnerOtp)){
+        if(!(adminName && password && confirmPassword && officeContact)){
             return res.status(400).json({isSuccess : false , message : 'All fields are required.'});
         }
 
