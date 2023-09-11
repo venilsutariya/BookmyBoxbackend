@@ -2,17 +2,21 @@ HELLO THIS IS BOOKMYBOX APIS
 
 ##1 ==> partners APIs  :
 
+0.  **for send otp ===> http://localhost:8000/send/otptopartner
+
+email is require
+
 ///////////////////////////////////////////////////////////////////
 1.  **Signup Partner Api ===> http://localhost:8000/partner/register
 require fields are ===> 
 
 FIELDS NAME :                      TYPE                  CONDITIONS
-adminName,                        string         |     length between 3 to 20    
-email,                            string         |     email should be a valid email
+adminName,                        string         |     length between 3 to 20
 password,                         string         |     length between 5 to 25
 confirmPassword,                  string         |     password and confirmPassword must be same
 profileImage,                     file           |     require
 officeContact,                    number         |     require
+partnerOtp,                       string         |     require
 
 submit using formdata
 All fields are require ***************************

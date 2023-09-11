@@ -5,18 +5,71 @@ import {validationResult} from 'express-validator';
 import jwt from 'jsonwebtoken';
 import fs from 'fs';
 import { tokenBlacklist } from "../middlewares/fetchPartnerUsingAuthToken";
+import nodemailer from 'nodemailer';
+import generateOtp from "../services/generateOtp";
+require('dotenv').config();
+
+// nodemailer transpoter
+const transpoter = nodemailer.createTransport({
+    service: "gmail",
+    port: 7000,
+    auth: {
+        user: process.env.SMTP_MAIL,
+        pass: process.env.SMTP_PASSWORD,
+    },
+})
+
+const OTP = generateOtp();
+let partnerEmail = '';
+
+// for send otp to partner
+export const sendOtpToPartner = async(req: express.Request , res: express.Response) => {
+    try {
+        const {email} = req.body;
+        partnerEmail = email;
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).json({ isSuccess: false, errors: errors.array()});
+        }
+        //check weather partner with this email exist or not
+        const existingPartnerWithEmail = await getPartnerByEmail(email);
+            if(existingPartnerWithEmail){
+                return res.status(409).json({isSuccess : false , message : 'user with this email already exist.'});
+            }
+        const info = await transpoter.sendMail({
+            from: process.env.SMTP_MAIL,
+            to: email,
+            subject: "otp validation",
+            text: `this is s message from bookmybox for otp validaiton`,
+            html: `<h3>YOUR OTP IS : <b>${OTP}</b></h3>`
+        });
+        return res.status(200).json({isSuccess : true , message : 'otp send successFully' , info});
+    } catch (error) {
+        console.log({error});
+        return res.status(500).send({message : 'internal server error.' , error});
+    }
+}
 
 // for register our partner
-export const partnerRegister = async(req: express.Request , res: express.Response) => {                   
+export const partnerRegister = async(req: express.Request , res: express.Response) => {  
     try{
-        const {adminName , email , password , confirmPassword , officeContact } = req.body;
+        const {adminName , password , confirmPassword , officeContact , partnerOtp} = req.body;
+
+        if(!partnerOtp){
+            return res.status(403).json({isSuccess : false , message : 'otp is require'});
+        }
+        if(!(partnerOtp.length === 6)){
+            return res.status(403).json({isSuccess : false , message : 'otp must contain six digit'});
+        }
+        if(partnerOtp !== OTP){
+            return res.status(403).json({isSuccess : false , message : 'Invalid otp'});
+        }
 
         // check for express validator
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(422).json({ isSuccess: false, errors: errors.array()});
         }
-
         // handle file is require
         const file = req.file;
         if(!file){
@@ -24,14 +77,8 @@ export const partnerRegister = async(req: express.Request , res: express.Respons
         }
 
         // handle all fields are require
-        if(!(adminName && email && password && confirmPassword && officeContact)){
+        if(!(adminName && password && confirmPassword && officeContact && partnerOtp)){
             return res.status(400).json({isSuccess : false , message : 'All fields are required.'});
-        }
-
-        //check weather partner with this email exist or not
-        const existingPartnerWithEmail = await getPartnerByEmail(email);
-        if(existingPartnerWithEmail){
-            return res.status(409).json({isSuccess : false , message : 'user with this email already exist.'});
         }
 
         //check weather partner with this adminName exist or not
@@ -52,7 +99,7 @@ export const partnerRegister = async(req: express.Request , res: express.Respons
 
         // create partner
         await createPartners({
-            adminName , email , password : securePassword , officeContact , profileImage : filepath
+            adminName , email : partnerEmail , password : securePassword , officeContact , profileImage : filepath
         });
 
         return res.status(200).json({isSuccess : true , message : 'partner created successfully.'}).end();

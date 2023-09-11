@@ -33,7 +33,7 @@ const PartnerSchema = new Schema(
       type: Number,
       required : true,
       trim: true,
-    }
+    },
   },
   {
     timestamps: true,
