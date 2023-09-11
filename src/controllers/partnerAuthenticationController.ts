@@ -19,7 +19,7 @@ const transpoter = nodemailer.createTransport({
     },
 })
 
-const OTP = generateOtp();
+let OTP = '';
 let partnerEmail = '';
 
 // for send otp to partner
@@ -36,6 +36,7 @@ export const sendOtpToPartner = async(req: express.Request , res: express.Respon
             if(existingPartnerWithEmail){
                 return res.status(409).json({isSuccess : false , message : 'user with this email already exist.'});
             }
+        OTP = generateOtp();
         const info = await transpoter.sendMail({
             from: process.env.SMTP_MAIL,
             to: email,
