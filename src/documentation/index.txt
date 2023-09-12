@@ -49,7 +49,7 @@ All fields are require ***************************
 
 ///////////////////////////////////////////////////////////////////
 FOR USER
-4.GET  **get all Partner API ===> http://localhost:8000/getallpartners
+4.POST  **get all Partner API ===> http://localhost:8000/getallpartners
 require fields are ===>
 
 FIELDS NAME : no feilds just call api and you get all partners
@@ -86,7 +86,7 @@ email                             string
 when this api call you get other api for resetpassword in response
 
 //////////////////////////////
-8.GET **reset partner password api ==> put url which you get in forgotpassword api response
+8.POST **reset partner password api ==> put url which you get in forgotpassword api response
 require fields are ===>
 
 FIELDS NAME :                      TYPE             CONDITIONS

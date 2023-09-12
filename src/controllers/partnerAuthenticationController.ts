@@ -261,7 +261,7 @@ export const resetPartnerPassword = async(req: express.Request , res: express.Re
     try {
         const {id , token} = req.params;
         const {password , confirmPassword} = req.body;
-        const {email} = req.body;
+        console.log(password , confirmPassword);
         const errors = validationResult(req);
         if(!errors.isEmpty()){
             return res.status(422).json({errors});

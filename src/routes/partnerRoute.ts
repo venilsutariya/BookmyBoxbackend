@@ -10,9 +10,9 @@ export default (router: Router) => {
     router.post('/partner/register' , uploadFile , registrationPartnerValidationRules , partnerRegister);
     router.post('/partner/login' , loginPartnerValidationRules , partnerLogin);
     router.get('/partner/get' , fetchPartnerUsingAuthToken , getPartner);
-    router.get('/getallpartners' , getAllPartners);
+    router.post('/getallpartners' , getAllPartners);
     router.patch('/editpartnerbyid/id=:partnerid', uploadFile , updatePartnerValidationRules, fetchPartnerUsingAuthToken , editPartner);
     router.delete('/logoutpartner' , logoutPartner);
     router.post('/forgotpassword/partner' ,forgotPasswordValidationRules , forgotPartnerPassword);
-    router.get('/resetPartnerPassword/:id/:token', resetPasswordValidationRules , resetPartnerPassword);
+    router.post('/resetPartnerPassword/:id/:token', resetPasswordValidationRules , resetPartnerPassword);
 };
