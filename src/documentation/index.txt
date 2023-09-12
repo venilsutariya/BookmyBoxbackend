@@ -14,7 +14,7 @@ partnerOtp is require
 
 
 ///////////////////////////////////////////////////////////////////
-1.  **Signup Partner Api ===> http://localhost:8000/partner/register
+1.POST  **Signup Partner Api ===> http://localhost:8000/partner/register
 require fields are ===> 
 
 FIELDS NAME :                      TYPE                  CONDITIONS
@@ -29,7 +29,7 @@ submit using formdata
 All fields are require ***************************
 
 ////////////////////////////////////////////////////////////////
-2.  **Login Partner API ===> http://localhost:8000/partner/Login
+2.POST  **Login Partner API ===> http://localhost:8000/partner/Login
 require fields are ===>
 
 FIELDS NAME :                      TYPE                  CONDITIONS
@@ -39,7 +39,7 @@ password,                         string         |     length between 5 to 25
 All fields are require ***************************
 
 ////////////////////////////////////////////////////////////////////////////
-3.  **get Partner using authtoken API ===> http://localhost:8000/partner/get
+3.GET  **get Partner using authtoken API ===> http://localhost:8000/partner/get
 require fields are ===>
 
 FIELDS NAME :                      TYPE     
@@ -49,13 +49,13 @@ All fields are require ***************************
 
 ///////////////////////////////////////////////////////////////////
 FOR USER
-4.  **get all Partner API ===> http://localhost:8000/getallpartners
+4.GET  **get all Partner API ===> http://localhost:8000/getallpartners
 require fields are ===>
 
 FIELDS NAME : no feilds just call api and you get all partners
 
 ///////////////////////////////////////////////////////////////////
-5.  **edit Partner by id Api ===> http://localhost:8000/editpartnerbyid/id=:putpartneridhere
+5.PATCH  **edit Partner by id Api ===> http://localhost:8000/editpartnerbyid/id=:putpartneridhere
 require fields are ===> 
 
 FIELDS NAME :                      TYPE                  CONDITIONS     
@@ -68,7 +68,7 @@ submit using formdata
 All fields are require ***************************
 
 /////////////////////////////////////////////////////////////////////////////////
-6.  **logout partner by expire auth-token ===> http://localhost:8000/logoutpartner
+6.DELETE  **logout partner by expire auth-token ===> http://localhost:8000/logoutpartner
 require fields are ===>
 
 FIELDS NAME :                      TYPE     
@@ -77,7 +77,7 @@ authtoken,                         string
 after logout your authtoken expire then you need to login again.
 
 //////////////////////////////////////////////
-7.  **verify user by email for forgot password ===> http://localhost:8000/forgotpassword/partner
+7.POST  **verify user by email for forgot password ===> http://localhost:8000/forgotpassword/partner
 require fields are ===>
 
 FIELDS NAME :                      TYPE     
@@ -86,7 +86,7 @@ email                             string
 when this api call you get other api for resetpassword in response
 
 //////////////////////////////
-8. **reset partner password api ==> put url which you get in forgotpassword api response
+8.GET **reset partner password api ==> put url which you get in forgotpassword api response
 require fields are ===>
 
 FIELDS NAME :                      TYPE             CONDITIONS
