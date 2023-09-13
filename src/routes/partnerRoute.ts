@@ -1,5 +1,5 @@
 import {Router} from "express";
-import { editPartner, forgotPartnerPassword, getAllPartners, getPartner, logoutPartner, otpValidationPartner, partnerLogin, partnerRegister, resetPartnerPassword, sendOtpToPartner } from "../controllers/partnerAuthenticationController";
+import { editPartner, forgotPartnerPassword, forgotPassOtpValidation, getAllPartners, getPartner, logoutPartner, otpValidationPartner, partnerLogin, partnerRegister, resetPartnerPassword, sendOtpToPartner } from "../controllers/partnerAuthenticationController";
 import uploadFile from "../middlewares/uploadImage";
 import { forgotPasswordValidationRules, loginPartnerValidationRules, registrationPartnerValidationRules, resetPasswordValidationRules, sendOtpToPartnerValidationRules, updatePartnerValidationRules } from "../validations/partnerValidation";
 import { fetchPartnerUsingAuthToken } from "../middlewares/fetchPartnerUsingAuthToken";
@@ -14,5 +14,6 @@ export default (router: Router) => {
     router.patch('/editpartnerbyid/id=:partnerid', uploadFile , updatePartnerValidationRules, fetchPartnerUsingAuthToken , editPartner);
     router.delete('/logoutpartner' , logoutPartner);
     router.post('/forgotpassword/partner' ,forgotPasswordValidationRules , forgotPartnerPassword);
+    router.post('/forgotpassword/otpvalidation' , forgotPassOtpValidation);
     router.post('/resetPartnerPassword/:id/:token', resetPasswordValidationRules , resetPartnerPassword);
 };

@@ -21,6 +21,8 @@ const transpoter = nodemailer.createTransport({
 
 let OTP = '';
 let partnerEmail = '';
+let forgotPassOtp = '';
+let forgotPassEmail = '';
 
 // for send otp to partner
 export const sendOtpToPartner = async(req: express.Request , res: express.Response) => {
@@ -234,7 +236,7 @@ export const logoutPartner = async(req: express.Request , res: express.Response)
     }
 }
 
-//verify for forgot-password 
+//verify for forgot-password and send otp
 export const forgotPartnerPassword = async(req: express.Request , res:express.Response) => {
     try {
         const {email} = req.body;
@@ -246,10 +248,41 @@ export const forgotPartnerPassword = async(req: express.Request , res:express.Re
         if(!existedPartner){
             return res.status(401).json({isSuccess : false , message : 'partner with this email not exist'});
         }
+        forgotPassEmail = email;
+        forgotPassOtp = generateOtp();
+        const info = await transpoter.sendMail({
+            from: process.env.SMTP_MAIL,
+            to: email,
+            subject: "otp validation",
+            text: `this is s message from bookmybox for otp validaiton`,
+            html: `<h3>YOUR OTP IS : <b>${forgotPassOtp}</b></h3>`
+        });
+        return res.status(200).json({isSuccess : true , message : 'otp send successFully' , info});
+    } catch (error) {
+       console.log(error);
+       res.status(500).json({error : 'internal server error' , err : error});
+    }
+}
+
+// for otp validation
+export const forgotPassOtpValidation = async(req: express.Request , res: express.Response) => {
+    try {
+        const { forgotOtp } = req.body;
+        if(!forgotOtp){
+            return res.status(403).json({isSuccess : false , message : 'otp is require'});
+        }
+        if(forgotOtp != forgotPassOtp){
+            return res.status(403).json({isSuccess : false , message : 'Invalid otp'});
+        }
+        const existedPartner = await getPartnerByEmail(forgotPassEmail);
+        if(!existedPartner){
+            return res.status(401).json({isSuccess : false , message : 'partner with this email not exist'});
+        }
         const secret = process.env.SECRET_KEY + existedPartner.password;
         const token = jwt.sign({email: existedPartner.email , id: existedPartner._id} , secret , {expiresIn : '5m'});
         const link = `http://localhost:8000/resetPartnerPassword/${existedPartner._id}/${token}`;
-        res.send(link);
+        return res.status(200).json({isSuccess : true , message : 'otp validate successFully' , link});
+
     } catch (error) {
        console.log(error);
        res.status(500).json({error : 'internal server error' , err : error});
@@ -261,7 +294,6 @@ export const resetPartnerPassword = async(req: express.Request , res: express.Re
     try {
         const {id , token} = req.params;
         const {password , confirmPassword} = req.body;
-        console.log(password , confirmPassword);
         const errors = validationResult(req);
         if(!errors.isEmpty()){
             return res.status(422).json({errors});
