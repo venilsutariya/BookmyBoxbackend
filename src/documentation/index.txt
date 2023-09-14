@@ -77,16 +77,20 @@ authtoken,                         string
 after logout your authtoken expire then you need to login again.
 
 //////////////////////////////////////////////
-7.POST  **verify user by email for forgot password ===> http://localhost:8000/forgotpassword/partner
+7.POST  **verify user by email for forgot password and send otp ===> http://localhost:8000/forgotpassword/partner
 require fields are ===>
 
 FIELDS NAME :                      TYPE     
 email                             string
 
-when this api call you get other api for resetpassword in response
+8.POST otp validation ===> http://localhost:8000/forgotpassword/otpvalidation
+require fields are ===>
+   
+forgotOtp is require 
+you got url in resp
 
 //////////////////////////////
-8.POST **reset partner password api ==> put url which you get in forgotpassword api response
+9.POST **reset partner password api ==> put url which you get in forgotpassword api response
 require fields are ===>
 
 FIELDS NAME :                      TYPE             CONDITIONS
