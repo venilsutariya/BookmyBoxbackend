@@ -21,6 +21,9 @@ app.use(compression());
 app.use(cookieParser());
 app.use(express.static('src/uploads'));
 app.use("/", routes());
+app.get("/" , (req , res) => {
+  res.send("hello This is Backend of bookmybox");
+})
 
 // connect to database function
 connectToDatabase(MONGO_URL);
